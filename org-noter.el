@@ -174,6 +174,11 @@ This setting may be overridden in a document with the function
   :group 'org-noter
   :type '(repeat string))
 
+(defcustom org-noter-docs-search-path "~/Documents"
+  "Path to search for the docs been noted"
+  :group 'org-noter
+  :type 'string)
+
 (defcustom org-noter-notes-search-path '("~/Documents")
   "List of paths to check (non recursively) when searching for a notes file."
   :group 'org-noter
@@ -1294,9 +1299,9 @@ relative to."
       (unless (org-noter--check-doc-prop doc-prop)
         (setq doc-prop (expand-file-name
                         (read-file-name
-                         "Invalid or no document property found. Please specify a document path: " nil nil t)))
+                         "Invalid or no document property found. Please specify a document path: " org-noter-docs-search-path nil t)))
         (when (or (file-directory-p doc-prop) (not (file-readable-p doc-prop))) (user-error "Invalid file path"))
-        (when (y-or-n-p "Do you want a relative file name? ") (setq doc-prop (file-relative-name doc-prop))))
+        (setq doc-prop (file-relative-name doc-prop)))
 
       (org-entry-put nil org-noter-property-doc-file doc-prop))
     doc-prop))
